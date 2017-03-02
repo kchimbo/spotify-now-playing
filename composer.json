@@ -1,0 +1,24 @@
+{
+    "name": "kchimbo/spotify-now-playing",
+    "description": "Get track/album info of the current playing song",
+    "keywords": ["mopidy-spotify", "spotify-now-playing"],
+    "license": "DBAD",
+    "authors": [
+        {
+            "name": "Osamu Fujimoto",
+            "email": "osamu.fujimoto@gmail.com"
+        }
+    ],
+    "type": "project",
+    "require": {
+		"php": ">=5.4"
+    },
+	"require-dev": {
+		"phpunit/phpunit": "5.2.*"
+    },
+	"autoload": {
+        "psr-4": {
+            "Kchimbo\\NowPlaying\\": "src/"
+        }
+    }
+}
