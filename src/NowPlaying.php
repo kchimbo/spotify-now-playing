@@ -17,11 +17,11 @@ class NowPlaying
     {
         $r = $this->makeRequest();
 
-        if (!$r) return; 
-
         $response = json_decode($r);
 
         $e = $response->result;
+
+        if (is_null($e)) return;
 
         $arr = [
             'album' => $e->album->name,
