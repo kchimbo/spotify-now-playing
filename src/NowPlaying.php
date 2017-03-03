@@ -6,7 +6,6 @@ class NowPlaying
 {
     protected $endpoint;
 
-
     public function __construct($endpoint)
     {
         $this->endpoint = $endpoint;
@@ -53,13 +52,14 @@ class NowPlaying
         ];
 
         curl_setopt_array($curl, [
-            CURLOPT_HTTPHEADER => $headers,
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_CONNECTTIMEOUT => 1, 
-            CURLOPT_TIMEOUT => 3,
-            CURLOPT_URL => $this->endpoint,
-            CURLOPT_POST => 1,
-            CURLOPT_POSTFIELDS => $json ]);
+            CURLOPT_HTTPHEADER      => $headers,
+            CURLOPT_RETURNTRANSFER  => 1,
+            CURLOPT_CONNECTTIMEOUT  => 1, 
+            CURLOPT_TIMEOUT         => 3,
+            CURLOPT_URL             => $this->endpoint,
+            CURLOPT_POST            => 1,
+            CURLOPT_POSTFIELDS      => $json 
+        ]);
 
         $r = curl_exec($curl);
         
@@ -70,28 +70,31 @@ class NowPlaying
         return $r; 
     }
 
-    /**
-     * @param array $lastTrack
-     * @param $versionName
-     *
-     * @return string
-     */
+
     protected function getImage($spotify)
     {
         $url = "https://embed.spotify.com/oembed/?url={$spotify}&format=json";
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (compatible; curl)");
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        $json = curl_exec($ch);
-        curl_close($ch);
+        $curl = curl_init();
 
-        $json  = json_decode($json);
+        curl_setopt_array($curl, [
+            CURLOPT_URL             => $url,
+            CURLOPT_RETURNTRANSFER  => true,
+            CURLOPT_USERAGENT       => "Mozilla/5.0 (compatible; curl)",
+            CURLOPT_SSL_VERIFYHOST  => false,
+            CURLOPT_SSL_VERIFYPEER  => false,
+        ]);
 
-        $cover = $json->thumbnail_url;
+        $r = curl_exec($curl);
+
+        if (!$r) return null; 
+
+        curl_close($curl);
+
+        $r  = json_decode($r);
+
+        $cover = $r->thumbnail_url;
+
         return $cover;
     }
 }
